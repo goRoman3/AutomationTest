@@ -20,8 +20,18 @@ let preRequest = `
 `
 
 //Test
- let test = `
- let jsonData = pm.response.json();
+var reqBody = JSON.parse(request.data);
+tests["Data"] = reqBody.restaurantId === resBody.restaurantId;
+
+pm.test("Response property matches environment variable", function () {
+  pm.expect(reqBody.userName).to.eql(pm.environment.get("userName"));
+});
+
+pm.test("Password has 15 charactrslength", function () {
+  pm.expect(reqBody.newPassword).to.have.lengthOf(15);
+});
+
+let jsonData = pm.response.json();
 
 pm.test("Content-Type header is present", () => {
   pm.response.to.have.header("Content-Type");
@@ -80,4 +90,3 @@ const schema = {
 pm.test("Validate schema", () => {
     pm.response.to.have.jsonSchema(schema);
 });
- `
